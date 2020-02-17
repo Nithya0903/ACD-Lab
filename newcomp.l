@@ -33,7 +33,7 @@
   #define SIMPAS 29
   	//   =	Simple assignment operator.
   #define COMPAS 30
-  
+
 //Arithmetic
   #define ARITHOP 31
   #define PP 40
@@ -85,8 +85,9 @@
   #define CHARCONST 75
   #define INVALIDSTRING 76
   #define DOT 80
-%}
 
+%}
+at [@||$||*]
 alpha [A-Z||a-z]
 digit [0-9]
 und [_]
@@ -121,6 +122,12 @@ struct return STRUCT;
 
 #define.* return DEF;
 
+
+" " return 1000000;
+{digit}({alpha}|{und})({alpha}|{digit}|{und})*  return 333;
+{at}({alpha}|{und})({at})?({alpha}|{digit}|{und})*({at})?  return 333;
+({alpha}|{und})({at})({alpha}|{digit}|{und})*({at})?  return 333;
+({alpha}|{und})({at})?({alpha}|{digit}|{und})*({at})  return 333;
 {alpha}({alpha}|{digit}|{und})*    return ID;
 {alpha}({alpha}|{digit}|{und})*\[{digit}*\] return ARR;
 {digit}+  return INTCONST;
@@ -209,6 +216,7 @@ int main(void)
       ba_c=0,ba_o=0,ba_l, // Number of open and close paranthesis, last line where the open parantesis was used
       bb_o=0,bb_c=0,bb_l, // Number of open and close square braces,  last line where the open sqaure brace was used
       bc_o=0,bc_c=0,bc_l, // Number of open and close curly braces,  last line where the open curly brace was used
+
       rep=0; // Flag to denote whether the current token is already in symbol table
 
   //Taking the input program
@@ -241,61 +249,57 @@ int main(void)
       }
     }
 
-    
-    if(ba_c > ba_o){
-    ba_o++;
-      printf("\n-------------ERROR : UNMATCHED ')' at Line %d------------------\n", yylineno);}
 
-    if(bb_c>bb_o)
-      printf("\n-------------ERROR : UNMATCHED ']' at Line %d------------------\n", yylineno);
-
-    if(bc_c>bc_o)
-      printf("\n-------------ERROR : UNMATCHED '}' at Line %d------------------\n", yylineno);
 
     if(rep==0 && newToken!=65 && newToken!=66 && newToken!=67 && mlc==0)
     {
       strcpy(symbolTable[i].token,yytext);
     }
+    if(newToken ==333 || newToken == 334 && mlc==0)
+    {
+
+      printf("%s\t\t\tInvalid identifier----------Line %d\n",yytext,yylineno);
+    }
 
     if(newToken ==1 && mlc==0)
     {
-      kw++;	
-      printf("%s\t\tWhile Loop----------Line %d\n",yytext,yylineno);
+      kw++;
+      printf("%s\t\t\tWhile Loop----------Line %d\n",yytext,yylineno);
     }
 
     else if(newToken ==4 && mlc==0)
     {
-      printf("%s\t\tMain function----------Line %d\n",yytext,yylineno);
+      printf("%s\t\t\tMain function----------Line %d\n",yytext,yylineno);
     }
 
     else if(newToken ==8 && mlc==0)
     {
-       kw++;	
-      printf("%s\t\tIf statement----------Line %d\n",yytext,yylineno);
+       kw++;
+      printf("%s\t\t\tIf statement----------Line %d\n",yytext,yylineno);
     }
 
     else if(newToken ==16 && mlc==0)
     {
  kw++;
-      printf("%s\t\tElse statement----------Line %d\n",yytext,yylineno);
+      printf("%s\t\t\tElse statement----------Line %d\n",yytext,yylineno);
     }
 
     else if(newToken ==17 && mlc==0)
     {
  kw++;
-      printf("%s\t\tFor Loop----------Line %d\n",yytext,yylineno);
+      printf("%s\t\t\tFor Loop----------Line %d\n",yytext,yylineno);
     }
 
     else if(newToken ==18 && mlc==0)
     {
  kw++;
-      printf("%s\t\tStruct definition/declaration----------Line %d\n",yytext,yylineno);
+      printf("%s\t\t\tStruct definition/declaration----------Line %d\n",yytext,yylineno);
     }
 
     else if(((newToken>=1 && newToken<=15)) && mlc==0) // Keywords
     {
-       kw++;	
-      printf("%s\t\tKeyword----------Line %d\n",yytext,yylineno);
+       kw++;
+      printf("%s\t\t\tKeyword----------Line %d\n",yytext,yylineno);
     }
 
     else if(newToken==20 && mlc==0) // Identifiers
@@ -304,57 +308,57 @@ int main(void)
       {	symbolInsert(symbolTable, i, yytext, "ID");
       	i++;
       }
-      printf("%s\t\tIdentifier----------Line %d\n",yytext,yylineno);
+      printf("%s\t\t\tIdentifier----------Line %d\n",yytext,yylineno);
     }
 
     else if(newToken==73 && mlc==0)
     {
-      
-      printf("%s\t\tInteger Constant----------Line %d\n",yytext,yylineno);
+
+      printf("%s\t\t\tInteger Constant----------Line %d\n",yytext,yylineno);
     }
 
     else if(newToken==74 && mlc==0)
     {
-      
-      printf("%s\t\tFloating Point Constant----------Line %d\n",yytext,yylineno);
+
+      printf("%s\t\t\tFloating Point Constant----------Line %d\n",yytext,yylineno);
     }
 
     else if(newToken==22 && mlc==0)
     {
-      printf("%s\t\tRelational Operator----------Line %d\n",yytext,yylineno);
+      printf("%s\t\t\tRelational Operator----------Line %d\n",yytext,yylineno);
     }
 
     else if(newToken==26 && mlc==0)
     {
-      printf("%s\t\tLogical Operator----------Line %d\n",yytext,yylineno);
+      printf("%s\t\t\tLogical Operator----------Line %d\n",yytext,yylineno);
     }
 
     else if(newToken==29 && mlc==0)
     {
-      printf("%s\t\tSimple Assignment Operator----------Line %d\n",yytext,yylineno);
+      printf("%s\t\t\tSimple Assignment Operator----------Line %d\n",yytext,yylineno);
     }
     else if(newToken==30 && mlc==0)
     {
-      printf("%s\t\tCompound Assignment Operator----------Line %d\n",yytext,yylineno);
+      printf("%s\t\t\tCompound Assignment Operator----------Line %d\n",yytext,yylineno);
     }
 
     else if(newToken==31 && mlc==0)
     {
-      printf("%s\t\tArithmetic Operator----------Line %d\n",yytext,yylineno);
+      printf("%s\t\t\tArithmetic Operator----------Line %d\n",yytext,yylineno);
     }
 
     else if(newToken==42 && mlc==0)
     {
-      printf("%s\t\tBitwise Operator----------Line %d\n",yytext,yylineno);
+      printf("%s\t\t\tBitwise Operator----------Line %d\n",yytext,yylineno);
     }
 
     else if(newToken==40 && mlc==0)
     {
-      printf("%s\t\tIncrement Operator----------Line %d\n",yytext,yylineno);
+      printf("%s\t\t\tIncrement Operator----------Line %d\n",yytext,yylineno);
     }
     else if(newToken==41 && mlc==0)
     {
-      printf("%s\t\tDecrement Operator----------Line %d\n",yytext,yylineno);
+      printf("%s\t\t\tDecrement Operator----------Line %d\n",yytext,yylineno);
     }
 
 
@@ -382,12 +386,12 @@ int main(void)
       if(newToken==59)
         bc_c++;
         if(!newToken==60 && !newToken==53)
-      printf("%s\t\tSpecial Character----------Line %d\n",yytext,yylineno);
+      printf("%s\t\t\tSpecial Character----------Line %d\n",yytext,yylineno);
     }
 
     else if(newToken==63 && mlc==0)
     {
-      printf("%s\t\tHeader----------Line %d\n",yytext,yylineno);
+      printf("%s\tHeader----------Line %d\n",yytext,yylineno);
     }
 
     else if(newToken==64 && mlc==0)
@@ -414,32 +418,32 @@ int main(void)
         symbolInsert(symbolTable, i, id, "ID");
       	i++;
       }
-      printf("%s\t\tArray Identfier----------Line %d\n",yytext,yylineno);
+      printf("%s\t\t\tArray Identfier----------Line %d\n",yytext,yylineno);
     }
 
     else if(newToken==65 && mlc==0)
     {
-      printf("%s\t\tSingle Line Comment----------Line %d\n",yytext,yylineno);
+      printf("%s\t\t\tSingle Line Comment----------Line %d\n",yytext,yylineno);
       slcline=yylineno;
     }
 
     else if(newToken==66)
     {
       mlc=1;
-      printf("%s\t\tMulti Line Comment Start----------Line %d\n",yytext,yylineno);
+      printf("%s\t\t\tMulti Line Comment Start----------Line %d\n",yytext,yylineno);
       mlcline = yylineno;
 
     }
 
     else if(newToken==66 && mlc==1)
     {
-      printf("%s\t\tNested multi Line Comment Start----------Line %d\n",yytext,yylineno);
+      printf("%s\t\t\tNested multi Line Comment Start----------Line %d\n",yytext,yylineno);
     }
 
     else if(newToken==67 && mlc==1)
     {
       mlc=0;
-      printf("%s\t\tMulti Line Comment End----------Line %d\n",yytext,yylineno);
+      printf("%s\t\t\tMulti Line Comment End----------Line %d\n",yytext,yylineno);
       mlcline=0;
     }
 
@@ -448,14 +452,15 @@ int main(void)
 
     else if(newToken==68 && mlc==0)
     {
-      printf("%s\t\tPreprocessor Directive----------Line %d\n",yytext,yylineno);
+      printf("%s\t\t\tPreprocessor Directive----------Line %d\n",yytext,yylineno);
       newToken=yylex();
       continue;
     }
 
     else if(newToken>=69 && newToken<=70 && mlc==0)
     {
-      printf("%s\t\tPre Defined Function----------Line %d\n",yytext,yylineno);
+      printf("%s\t\t\tPre Defined Function----------Line %d\n",yytext,yylineno);
+
     }
 
     else if(newToken==71 && mlc==0)
@@ -483,19 +488,20 @@ int main(void)
       	i++;
       }
 
-      printf("%s\t\tUser Defined Function----------Line %d\n",yytext,yylineno);
+      printf("%s\t\t\tUser Defined Function----------Line %d\n",yytext,yylineno);
+
     }
 
     else if(newToken==72 && mlc==0)
     {
-      
-      printf("%s\t\tString literal----------Line %d\n",yytext, yylineno);
+
+      printf("%s\t\t\tString literal----------Line %d\n",yytext, yylineno);
     }
 
     else if(newToken==75 && mlc==0)
     {
-    
-      printf("%s\t\tCharacter Constant----------Line %d\n",yytext,yylineno);
+
+      printf("%s\t\t\tCharacter Constant----------Line %d\n",yytext,yylineno);
     }
 
     else if(newToken==76 && mlc==0)
@@ -517,6 +523,19 @@ int main(void)
 
   if(bc_c<bc_o)
     printf("\n--------------------ERROR ! UNMATCHED '{' at Line %d ------------------------\n",bc_l);
+
+
+
+    if(ba_c > ba_o){
+    ba_o++;
+      printf("\n-------------ERROR : UNMATCHED ')' at Line %d------------------\n", yylineno-1);}
+
+    if(bb_c>bb_o)
+      printf("\n-------------ERROR : UNMATCHED ']' at Line %d------------------\n", yylineno-1);
+
+    if(bc_c>bc_o)
+      printf("\n-------------ERROR : UNMATCHED '}' at Line %d------------------\n", yylineno-1);
+
 
   printf("\n------------Symbol Table---------------------\n\nSNo\tToken\t\tAttribute\n\n");
 
