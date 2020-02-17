@@ -8,11 +8,11 @@ c=a + b;
 char x[5];
 int i;
 for  (i=0;i<5;i++ )
-{
+
     int a;
     scanf("%c",&x[i]); 
 
-while(i<10)
+while(i<10
 {
     printf("d");
     i++;

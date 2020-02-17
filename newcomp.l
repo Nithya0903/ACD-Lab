@@ -220,7 +220,7 @@ int main(void)
       rep=0; // Flag to denote whether the current token is already in symbol table
   printf("LEXEME\t\t\tTYPE\t\t\t\t\tLINE NUMBER\n------------------------------------------------------------------------------");
   //Taking the input program
-  yyin= fopen("var.c","r");
+  yyin= fopen("test1.c","r");
 
   //Reading a single token from the program
   newToken = yylex();
