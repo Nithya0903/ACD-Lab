@@ -92,6 +92,7 @@ alpha [A-Z||a-z]
 digit [0-9]
 und [_]
 space [ ]
+comma [,]
 
 %%
 \n	{yylineno++;}
@@ -135,7 +136,7 @@ struct return STRUCT;
 
 \"[^\n|^\"]*[\n] return INVALIDSTRING;
 
-{alpha}({alpha}|{digit}|{und})*\({alpha}({alpha}|{digit}|{und}|{space})*\) return FUNC;
+{alpha}({alpha}|{digit}|{und})*\(({alpha}|{digit}|{und}|{space}|{comma})*\) return FUNC;
 
 \"[^\n]*\" return STRING;
 \'{alpha}\' return CHARCONST;
@@ -437,7 +438,7 @@ int main(void)
 
     else if(newToken==66 && mlc==1)
     {
-      printf("%s\t\t\tNested multi Line Comment Start\t\t\tLine %d\n",yytext,yylineno);
+      printf("%s\t\t\tNested multi Line Comment Start\t\tLine %d\n",yytext,yylineno);
     }
 
     else if(newToken==67 && mlc==1)

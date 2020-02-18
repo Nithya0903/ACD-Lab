@@ -17,6 +17,7 @@ while(i<10
     printf("d");
     i++;
 }
+/* this is a mu */
 printf("Sum:%d",c);
 
 }}
