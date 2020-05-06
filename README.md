@@ -1,3 +1,3 @@
-# ACD-Lab
+# ACD-Lab Assignments
 - [X] Lexical Analyzer
-- [ ] Syntax Analyzer
+- [X] Syntax Analyzer
